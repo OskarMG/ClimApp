@@ -57,8 +57,8 @@ class CAChangeCityView: UIView {
         ])
         
         
-        // TEMPORAL
-        dateLabel.text = "Mon 3 Dec 8:41 am"
+        cityNameLabel.text  = "City"
+        dateLabel.text      = "Day 0 Month 0:00 period"
         
     }
 }

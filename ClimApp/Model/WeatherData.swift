@@ -20,6 +20,7 @@ struct WeatherData: Codable {
     var main:       [String : Double]
     var coord:      [String : Double]
     var weather:    [Weather]
+    var dt:         Double
     
     
     func updateWeatherIcon(id: Int) -> UIImage {

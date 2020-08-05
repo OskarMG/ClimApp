@@ -45,14 +45,24 @@ class WeatherVC: UIViewController, CLLocationManagerDelegate, ChangeCityDelegate
         weather.numberOfLines = 2
     }
     
-    func updateUI(weatherData: WeatherData) {
-        print(weatherData)
+    func formatDate(dt: Double) -> String {
+        let date                = NSDate(timeIntervalSince1970: dt)
+        let dateFormatter       = DateFormatter()
+        dateFormatter.timeStyle = DateFormatter.Style.medium
         
+        dateFormatter.dateStyle = DateFormatter.Style.medium
+        dateFormatter.timeZone = .current
+        
+        return dateFormatter.string(from: date as Date)
+    }
+    
+    func updateUI(weatherData: WeatherData) {
         DispatchQueue.main.async {
             if let temperature = weatherData.main["temp"] {
                 self.weatherView.temp.text              = "\(Int(temperature - 273.15))º"
                 self.weather.text                       = weatherData.weather[0].description
                 self.changeCityView.cityNameLabel.text  = weatherData.name
+                self.changeCityView.dateLabel.text      = self.formatDate(dt: weatherData.dt)
                 self.weatherView.imageView.image        = weatherData.updateWeatherIcon(id: weatherData.weather[0].id)
                 
                 let maxTemp                         = Int(weatherData.main["temp_max"]!   - 273.15)
@@ -96,7 +106,10 @@ class WeatherVC: UIViewController, CLLocationManagerDelegate, ChangeCityDelegate
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations[locations.count - 1]
-        print(location.timestamp)
+        
+//        let dateFormatter                   = DateFormatter()
+//        let cityName                        = dateFormatter.timeZone.identifier.split(separator: "/")[1].split(separator: "_").joined(separator:  " ")
+//        changeCityView.cityNameLabel.text   = cityName
         
         if location.horizontalAccuracy > 0 {
             locationManager.stopUpdatingLocation()

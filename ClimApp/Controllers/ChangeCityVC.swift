@@ -14,8 +14,7 @@ class ChangeCityVC: UIViewController, UITextFieldDelegate {
     let textField           = CATextField()
     let getWeatherButton    = CAButton(backgroundColor: .clear, title: "Get weather", borderColor: nil)
     let closeButton         = CAButton(type: .close)
-    
-    //MARK: - TODO delegate
+
     var delegate: WeatherVC?
 
     override func viewDidLoad() {

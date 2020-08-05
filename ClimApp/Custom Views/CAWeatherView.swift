@@ -55,5 +55,8 @@ class CAWeatherView: UIView {
             temp.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
             temp.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding)
         ])
+        
+        temp.text           = "0º"
+        feelLikeTemp.text   = "0º / 0º feels like 0º"
     }
 }

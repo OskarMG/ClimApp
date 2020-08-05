@@ -21,9 +21,10 @@ class NetworkManager {
         var endPoint: String {
             if let coord = coord {
                 return baseURL + "?lat=\(coord["lat"]!)&lon=\(coord["lon"]!)&appid=\(appid)"
-            } else {
-                return baseURL + "?q=\(name)&appid=\(appid)"
             }
+            
+            print(baseURL + "?q=\(name)&appid=\(appid)")
+            return baseURL + "?q=\(name)&appid=\(appid)"
         }
         
         guard let url = URL(string: endPoint) else {
