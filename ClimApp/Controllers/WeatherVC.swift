@@ -17,6 +17,7 @@ class WeatherVC: UIViewController, CLLocationManagerDelegate, ChangeCityDelegate
     let changeCityView          = CAChangeCityView()
     let weatherView             = CAWeatherView()
     let weather                 = CATitleLabel(textAlignment: .center, fontSize: 35, weight: .light, textColor: .white)
+    let dateFormatter           = DateFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,8 +88,9 @@ class WeatherVC: UIViewController, CLLocationManagerDelegate, ChangeCityDelegate
     
     
     // MARK: - CHANGECITY DELEGATE METHODS
-    func newEntered(city name: String, coord: [String : String]?) {
-        NetworkManager.shared.getWeather(city: name, coord: coord) { result in
+    func newEntered(city name: String) {
+        let newName = name.replacingOccurrences(of: " ", with: "%20")
+        NetworkManager.shared.getWeather(city: newName) { result in
             switch result {
             case .failure(let error):
                 self.presentCAAlertOnMainThread(title: "Bad thing happened", message: "\(error.rawValue)", titleButton: "Ok")
@@ -106,18 +108,11 @@ class WeatherVC: UIViewController, CLLocationManagerDelegate, ChangeCityDelegate
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations[locations.count - 1]
-        
-//        let dateFormatter                   = DateFormatter()
-//        let cityName                        = dateFormatter.timeZone.identifier.split(separator: "/")[1].split(separator: "_").joined(separator:  " ")
-//        changeCityView.cityNameLabel.text   = cityName
+        let cityName = dateFormatter.timeZone.identifier.split(separator: "/")[1].replacingOccurrences(of: "_", with: "%20")
         
         if location.horizontalAccuracy > 0 {
             locationManager.stopUpdatingLocation()
-            let coord = [
-                "lat" : String(location.coordinate.latitude),
-                "lon" : String(location.coordinate.longitude)
-            ]
-            self.newEntered(city: "", coord: coord)
+            self.newEntered(city: cityName)
         }
     }
 }

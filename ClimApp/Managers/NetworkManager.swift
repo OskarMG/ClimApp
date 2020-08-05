@@ -16,14 +16,9 @@ class NetworkManager {
     
     init() {}
     
-    func getWeather(city name: String, coord: [String : String]?, completed: @escaping (Result<WeatherData, CAError>) -> Void) {
+    func getWeather(city name: String, completed: @escaping (Result<WeatherData, CAError>) -> Void) {
         
         var endPoint: String {
-            if let coord = coord {
-                return baseURL + "?lat=\(coord["lat"]!)&lon=\(coord["lon"]!)&appid=\(appid)"
-            }
-            
-            print(baseURL + "?q=\(name)&appid=\(appid)")
             return baseURL + "?q=\(name)&appid=\(appid)"
         }
         

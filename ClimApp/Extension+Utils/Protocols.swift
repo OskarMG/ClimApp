@@ -10,5 +10,5 @@ import UIKit
 
 
 protocol ChangeCityDelegate {
-    func newEntered(city name: String, coord: [String : String]?)
+    func newEntered(city name: String)
 }

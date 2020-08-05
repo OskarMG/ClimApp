@@ -63,7 +63,7 @@ class ChangeCityVC: UIViewController, UITextFieldDelegate {
     }
     
     func dismissVC () {
-        dismiss(animated: true) { self.delegate?.newEntered(city: self.textField.text!, coord: nil) }
+        dismiss(animated: true) { self.delegate?.newEntered(city: self.textField.text!) }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
