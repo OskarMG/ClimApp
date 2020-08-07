@@ -18,20 +18,15 @@ class NetworkManager {
     
     func getWeather(city name: String, completed: @escaping (Result<WeatherData, CAError>) -> Void) {
         
-        var endPoint: String {
-            return baseURL + "?q=\(name)&appid=\(appid)"
-        }
+        var endPoint: String { return baseURL + "?q=\(name)&appid=\(appid)" }
         
         guard let url = URL(string: endPoint) else {
             completed(.failure(.invalidCityName))
             return
         }
         
-        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            
-            if let _ = error {
-                completed(.failure(.unableToComplete))
-            }
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in            
+            if let _ = error { completed(.failure(.unableToComplete)) }
             
             guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
                 completed(.failure(.invalidResponse))

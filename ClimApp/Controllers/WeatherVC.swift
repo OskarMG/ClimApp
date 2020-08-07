@@ -46,24 +46,14 @@ class WeatherVC: UIViewController, CLLocationManagerDelegate, ChangeCityDelegate
         weather.numberOfLines = 2
     }
     
-    func formatDate(dt: Double) -> String {
-        let date                = NSDate(timeIntervalSince1970: dt)
-        let dateFormatter       = DateFormatter()
-        dateFormatter.timeStyle = DateFormatter.Style.medium
-        
-        dateFormatter.dateStyle = DateFormatter.Style.medium
-        dateFormatter.timeZone = .current
-        
-        return dateFormatter.string(from: date as Date)
-    }
-    
+
     func updateUI(weatherData: WeatherData) {
         DispatchQueue.main.async {
             if let temperature = weatherData.main["temp"] {
                 self.weatherView.temp.text              = "\(Int(temperature - 273.15))º"
                 self.weather.text                       = weatherData.weather[0].description
                 self.changeCityView.cityNameLabel.text  = weatherData.name
-                self.changeCityView.dateLabel.text      = self.formatDate(dt: weatherData.dt)
+                self.changeCityView.dateLabel.text      = Helpers.formatDate(dt: weatherData.dt)
                 self.weatherView.imageView.image        = weatherData.updateWeatherIcon(id: weatherData.weather[0].id)
                 
                 let maxTemp                         = Int(weatherData.main["temp_max"]!   - 273.15)
@@ -90,7 +80,9 @@ class WeatherVC: UIViewController, CLLocationManagerDelegate, ChangeCityDelegate
     // MARK: - CHANGECITY DELEGATE METHODS
     func newEntered(city name: String) {
         let newName = name.replacingOccurrences(of: " ", with: "%20")
-        NetworkManager.shared.getWeather(city: newName) { result in
+        NetworkManager.shared.getWeather(city: newName) {[weak self] result in
+            guard let self = self else { return }
+            
             switch result {
             case .failure(let error):
                 self.presentCAAlertOnMainThread(title: "Bad thing happened", message: "\(error.rawValue)", titleButton: "Ok")
